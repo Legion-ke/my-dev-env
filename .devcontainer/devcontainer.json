@@ -1,6 +1,13 @@
 {
-  "name": "Legion-Adaptable-Env",
+  "name": "Legion-DevBox",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "remoteUser": "vscode",
-  "postCreateCommand": "curl -fsSL https://raw.githubusercontent.com/Legion-ke/my-dev-env/master/.devcontainer/bootstrap.sh | sudo bash"
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true
+    }
+  },
+  "overrideCommand": false,
+  "postCreateCommand": "sh -c \"$(curl -fsLS get.chezmoi.io)\" -- init --apply --force Legion-ke"
 }
