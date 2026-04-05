@@ -8,5 +8,5 @@
     }
   },
   "remoteUser": "vscode",
-  "postCreateCommand": "sudo bash .devcontainer/bootstrap.sh"
+  "postCreateCommand": "sudo chown -R vscode:vscode /workspaces && sudo chmod +x .devcontainer/bootstrap.sh && ./ .devcontainer/bootstrap.sh || bash .devcontainer/bootstrap.sh"
 }
