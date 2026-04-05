@@ -1,6 +1,6 @@
 {
   "name": "Legion-DevBox",
-  "image": "mcr.microsoft.com/devcontainers/base:fedora",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "remoteUser": "vscode",
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
@@ -8,5 +8,5 @@
       "configureZshAsDefaultShell": true
     }
   },
-  "postCreateCommand": "mkdir -p ~/.ssh && echo 'Host github.com\n  Hostname ssh.github.com\n  Port 443\n  User git\n  StrictHostKeyChecking no' > ~/.ssh/config && chmod 600 ~/.ssh/config && sh -c \"$(curl -fsLS get.chezmoi.io)\" -- init --apply --force --branch main git@github.com:Legion-ke/chezmoi.git"
+  "postCreateCommand": "mkdir -p ~/.ssh && printf 'Host github.com\\n  Hostname ssh.github.com\\n  Port 443\\n  User git\\n  StrictHostKeyChecking no\\n' > ~/.ssh/config && chmod 600 ~/.ssh/config && sh -c \"$(curl -fsLS get.chezmoi.io)\" -- init --apply --force --branch main git@github.com:Legion-ke/chezmoi.git"
 }
