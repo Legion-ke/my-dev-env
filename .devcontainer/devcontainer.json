@@ -9,6 +9,6 @@
     }
   },
   "overrideCommand": false,
-  "postCreateCommand": "sh -c \"$(curl -fsLS get.chezmoi.io)\" -- init --apply --force git@github.com:Legion-ke/chezmoi.git"
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y curl git && sh -c \"$(curl -fsLS get.chezmoi.io)\" -- init --apply --force git@github.com:Legion-ke/chezmoi.git"
 
 }
