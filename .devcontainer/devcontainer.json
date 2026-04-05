@@ -2,5 +2,5 @@
   "name": "Legion-Adaptable-Env",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "remoteUser": "vscode",
-  "postCreateCommand": "curl -fsSL https://raw.githubusercontent.com/Legion-ke/my-dev-env/main/.devcontainer/bootstrap.sh | sudo bash"
+  "postCreateCommand": "curl -fsSL https://raw.githubusercontent.com/Legion-ke/my-dev-env/master/.devcontainer/bootstrap.sh | sudo bash"
 }
