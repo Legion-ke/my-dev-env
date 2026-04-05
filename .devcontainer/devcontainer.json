@@ -1,12 +1,50 @@
 {
   "name": "Legion-DevBox",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "image": "ghcr.io/legion-ke/devbox-base:latest",
   "remoteUser": "vscode",
+
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": true,
       "configureZshAsDefaultShell": true
     }
   },
-  "postCreateCommand": "mkdir -p ~/.ssh && printf 'Host github.com\\n  Hostname ssh.github.com\\n  Port 443\\n  User git\\n  StrictHostKeyChecking no\\n' > ~/.ssh/config && chmod 600 ~/.ssh/config && sh -c \"$(curl -fsLS get.chezmoi.io)\" -- init --apply --force --branch main git@github.com:Legion-ke/chezmoi.git"
+
+  "containerEnv": {
+    "DEVPOD": "true",
+    "EDITOR": "nvim",
+    "VISUAL": "nvim",
+    "TERM": "xterm-256color",
+    "COLORTERM": "truecolor"
+  },
+
+  "mounts": [
+    // SSH keys — so git/github works inside the container
+    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached,readonly",
+    // Persist mise runtimes across rebuilds — avoids re-downloading go/node/etc
+    "source=devbox-mise-cache,target=/home/vscode/.local/share/mise,type=volume",
+    // Persist neovim state (undo history, sessions, etc.)
+    "source=devbox-nvim-state,target=/home/vscode/.local/state/nvim,type=volume"
+  ],
+
+  "postCreateCommand": "echo '✅ DevBox ready — run: devup <project> <lang>'",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscodevim.vim"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/usr/bin/zsh"
+          }
+        },
+        "editor.fontFamily": "'JetBrainsMono Nerd Font', monospace",
+        "editor.fontSize": 14,
+        "editor.formatOnSave": true
+      }
+    }
+  }
 }
