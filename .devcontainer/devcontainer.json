@@ -1,12 +1,6 @@
 {
   "name": "Legion-Adaptable-Env",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "features": {
-    "ghcr.io/devcontainers/features/common-utils:2": {
-      "installZsh": true,
-      "configureZshAsDefaultShell": true
-    }
-  },
   "remoteUser": "vscode",
-  "postCreateCommand": "sudo chown -R vscode:vscode /workspaces && sudo chmod +x .devcontainer/bootstrap.sh && ./ .devcontainer/bootstrap.sh || bash .devcontainer/bootstrap.sh"
+  "postCreateCommand": "curl -fsSL https://raw.githubusercontent.com/Legion-ke/my-dev-env/main/.devcontainer/bootstrap.sh | sudo bash"
 }
