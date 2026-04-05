@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "🚀 Starting Adaptable Bootstrap..."
+echo "🚀 Starting Manual Bootstrap (Registry Bypass)..."
 
 # 1. Smart Fedora-to-Ubuntu Shim
 if ! command -v dnf &>/dev/null; then
@@ -21,30 +21,38 @@ EOF
   sudo chmod +x /usr/local/bin/dnf
 fi
 
-# 2. Install Mise Manually (Bypass Registry Errors)
+# 2. Install Neovim & Build Tools
+echo "📦 Installing Neovim and Core Dependencies..."
+sudo apt-get update
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository -y ppa:neovim-ppa/stable
+sudo apt-get update
+sudo apt-get install -y neovim git curl build-essential
+
+# 3. Install Mise Manually
 if ! command -v mise &>/dev/null; then
   echo "🛠️ Installing Mise..."
   curl https://mise.jdx.dev/install.sh | sh
 fi
 export PATH="$HOME/.local/bin:$PATH"
 
-# 3. Dynamic Tool Installation
+# 4. Dynamic Tool Installation (htop, jq, etc.)
 FINAL_TOOLS="${EXTRA_TOOLS:-tmux ripgrep fzf bat zoxide eza}"
-echo "📦 Installing: $FINAL_TOOLS"
-sudo apt-get update && sudo apt-get install -y $FINAL_TOOLS
+echo "📦 Installing Extra Tools: $FINAL_TOOLS"
+sudo apt-get install -y $FINAL_TOOLS
 
-# 4. Mise Language Setup
+# 5. Mise Language Setup (Go, Node, etc.)
 FINAL_LANGS="${MISE_LANGS:-node@latest python@3.12 go@latest}"
 echo "🛠️ Mise installing: $FINAL_LANGS"
-# Activate mise for this session
 eval "$($HOME/.local/bin/mise activate bash)"
 mise use --global $FINAL_LANGS
 
-# 5. Apply Chezmoi Dotfiles
+# 6. Apply Chezmoi Dotfiles
 echo "✨ Applying dotfiles..."
 if ! command -v chezmoi &>/dev/null; then
   sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
 fi
+export PATH="$HOME/.local/bin:$PATH"
 chezmoi init --apply --force Legion-ke
 
-echo "✅ Environment Ready!"
+echo "✅ Environment Ready! Neovim is live."
