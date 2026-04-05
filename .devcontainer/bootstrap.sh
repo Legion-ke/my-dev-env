@@ -1,12 +1,10 @@
 #!/bin/bash
 
-# --- PERMISSIONS FIX ---
-# Recursively give the 'vscode' user ownership of the workspace
-sudo chown -R vscode:vscode /workspaces/go-api || true
-sudo chmod -R 755 /workspaces/go-api || true
-# ---
-
 set -e
+
+# Fix ownership of the entire workspace immediately
+echo "🔑 Fixing permissions..."
+chown -R vscode:vscode /workspaces/go-api
 
 echo "🚀 Starting Manual Bootstrap (Registry Bypass)..."
 
