@@ -6,8 +6,9 @@
       "installZsh": true,
       "configureZshAsDefaultShell": true
     },
-    "ghcr.io/devcontainers/features/neovim:1": {},
-    "ghcr.io/devcontainers-contrib/features/mise:1": {}
+    "ghcr.io/devcontainers/features/neovim:1": {
+      "version": "stable"
+    }
   },
   "remoteUser": "vscode",
   "postCreateCommand": "bash .devcontainer/bootstrap.sh"

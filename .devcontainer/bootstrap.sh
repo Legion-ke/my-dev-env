@@ -3,7 +3,7 @@ set -e
 
 echo "🚀 Starting Adaptable Bootstrap..."
 
-# 1. Smart Fedora-to-Ubuntu Shim (Handles basic 'dnf install' calls)
+# 1. Smart Fedora-to-Ubuntu Shim
 if ! command -v dnf &>/dev/null; then
   echo "🔗 Creating smart dnf-to-apt shim..."
   cat <<'EOF' | sudo tee /usr/local/bin/dnf >/dev/null
@@ -21,28 +21,30 @@ EOF
   sudo chmod +x /usr/local/bin/dnf
 fi
 
-# 2. Dynamic Tool Installation
-# Use $EXTRA_TOOLS if provided, otherwise use these defaults
+# 2. Install Mise Manually (Bypass Registry Errors)
+if ! command -v mise &>/dev/null; then
+  echo "🛠️ Installing Mise..."
+  curl https://mise.jdx.dev/install.sh | sh
+fi
+export PATH="$HOME/.local/bin:$PATH"
+
+# 3. Dynamic Tool Installation
 FINAL_TOOLS="${EXTRA_TOOLS:-tmux ripgrep fzf bat zoxide eza}"
 echo "📦 Installing: $FINAL_TOOLS"
-sudo apt-get update
-sudo apt-get install -y $FINAL_TOOLS
+sudo apt-get update && sudo apt-get install -y $FINAL_TOOLS
 
-# 3. Mise Language Setup
-# Use $MISE_LANGS if provided, otherwise install these defaults
+# 4. Mise Language Setup
 FINAL_LANGS="${MISE_LANGS:-node@latest python@3.12 go@latest}"
 echo "🛠️ Mise installing: $FINAL_LANGS"
-export PATH="$HOME/.local/share/mise/bin:$PATH"
-# Ensure mise is initialized for this subshell
-eval "$(mise activate bash)"
+# Activate mise for this session
+eval "$($HOME/.local/bin/mise activate bash)"
 mise use --global $FINAL_LANGS
 
-# 4. Apply Chezmoi Dotfiles
-echo "✨ Applying dotfiles from Legion-ke..."
+# 5. Apply Chezmoi Dotfiles
+echo "✨ Applying dotfiles..."
 if ! command -v chezmoi &>/dev/null; then
   sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
 fi
-export PATH="$HOME/.local/bin:$PATH"
 chezmoi init --apply --force Legion-ke
 
 echo "✅ Environment Ready!"
