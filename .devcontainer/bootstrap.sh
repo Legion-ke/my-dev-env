@@ -1,7 +1,10 @@
 #!/bin/bash
 
-# Ensure the vscode user owns the workspace so chezmoi and mise can work
-sudo chown -R vscode:vscode /workspaces
+# --- PERMISSIONS FIX ---
+# Recursively give the 'vscode' user ownership of the workspace
+sudo chown -R vscode:vscode /workspaces/go-api || true
+sudo chmod -R 755 /workspaces/go-api || true
+# ---
 
 set -e
 
