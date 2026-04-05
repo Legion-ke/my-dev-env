@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Ensure the vscode user owns the workspace so chezmoi and mise can work
+sudo chown -R vscode:vscode /workspaces
+
 set -e
 
 echo "🚀 Starting Manual Bootstrap (Registry Bypass)..."

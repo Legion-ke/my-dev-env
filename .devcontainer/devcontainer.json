@@ -8,5 +8,5 @@
     }
   },
   "remoteUser": "vscode",
-  "postCreateCommand": "bash .devcontainer/bootstrap.sh"
+  "postCreateCommand": "sh .devcontainer/bootstrap.sh"
 }
